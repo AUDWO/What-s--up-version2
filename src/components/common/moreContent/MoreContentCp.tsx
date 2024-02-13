@@ -27,4 +27,5 @@ const MoreContentTextContainer = styled.div`
 const MoreContentText = styled.div`
   line-height: 150%;
   color: #767676;
+  color: ${(props) => props.theme.fontColor};
 `;

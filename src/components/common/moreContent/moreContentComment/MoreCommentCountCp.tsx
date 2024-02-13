@@ -13,6 +13,7 @@ export default MoreCommentCountCp;
 
 const MoreCommentCountTitle = styled.div`
   font-weight: 600;
+  color: ${(props) => props.theme.fontColor};
 `;
 
 const MoreCommentCountWrapper = styled.div`
@@ -22,4 +23,5 @@ const MoreCommentCountWrapper = styled.div`
 `;
 const MoreCommentCountNumber = styled.div`
   font-weight: 600;
+  color: ${(props) => props.theme.fontColor};
 `;

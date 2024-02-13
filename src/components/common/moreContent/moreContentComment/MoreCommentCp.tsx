@@ -15,5 +15,5 @@ const MoreCommentContainer = styled.div`
   width: 100%;
   height: auto;
   margin-bottom: 20px;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid ${(props) => props.theme.borderColor};
 `;

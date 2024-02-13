@@ -43,6 +43,7 @@ const MoreCommentBackground = styled.div`
   background-color: #f7f7f7;
   display: flex;
   justify-content: center;
+  background-color: ${(props) => props.theme.bgColor};
 `;
 
 const MoreCommentsContainer = styled.div`
