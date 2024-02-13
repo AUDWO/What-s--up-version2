@@ -26,6 +26,7 @@ const CommentProfileName = styled.span`
   font-weight: 800;
   margin-right: 10px;
   font-size: 14px;
+  color: ${(props) => props.theme.fontColor};
 `;
 
 const CommentContentContainer = styled.div`
@@ -37,4 +38,5 @@ const CommentContentContainer = styled.div`
 const CommentContent = styled.span`
   font-size: 13px;
   white-space: pre-wrap;
+  color: ${(props) => props.theme.fontColor};
 `;

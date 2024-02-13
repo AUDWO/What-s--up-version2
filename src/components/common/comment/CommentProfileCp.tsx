@@ -14,7 +14,7 @@ const CommentProfileImg = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: black;
+  background-color: red;
   margin-right: 10px;
 `;
 
