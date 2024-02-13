@@ -1,20 +1,43 @@
 import styled from "styled-components";
 import { DiarySelectImgIcon, PlusIcon } from "@components/icons/KeepDiaryIcons";
-
+import { useState } from "react";
+import { ArrowDownIcon } from "@components/icons/commonIcons/ArrowDownIcon";
+import { ArrowUpIcon } from "@components/icons/commonIcons/ArrowUpIcon";
 const DiaryImgSelectCp = () => {
+  const [imgSelectOpen, setImgSelectOpen] = useState(false);
   return (
     <DiaryImgSelectContainer>
       <DiaryImgToggleSelectWrapper>
         <DiaryImgToggleSelectText>사진 업로드</DiaryImgToggleSelectText>
-        <DiaryImgToggleSelectButton></DiaryImgToggleSelectButton>
+        {imgSelectOpen ? (
+          <ArrowUpIcon
+            onClick={() => {
+              setImgSelectOpen(false);
+            }}
+            color={"#acacac"}
+            fontSize={"20px;"}
+          />
+        ) : (
+          <ArrowDownIcon
+            onClick={() => {
+              setImgSelectOpen(true);
+            }}
+            color={"#acacac"}
+            fontSize={"20px;"}
+          />
+        )}
       </DiaryImgToggleSelectWrapper>
-      <DiaryImgSelectButtonWrapper>
-        <DiaryImgSelectButton>사진 선택</DiaryImgSelectButton>
-      </DiaryImgSelectButtonWrapper>
-      <DiarySelectImgWrapper>
-        <DiarySelectImgIcon />
-        <PlusIcon />
-      </DiarySelectImgWrapper>
+      {imgSelectOpen && (
+        <>
+          <DiaryImgSelectButtonWrapper>
+            <DiaryImgSelectButton>사진 선택</DiaryImgSelectButton>
+          </DiaryImgSelectButtonWrapper>
+          <DiarySelectImgWrapper>
+            <DiarySelectImgIcon />
+            <PlusIcon />
+          </DiarySelectImgWrapper>
+        </>
+      )}
     </DiaryImgSelectContainer>
   );
 };
@@ -25,6 +48,8 @@ const DiaryImgSelectContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 35px;
+  margin-bottom: 20px;
 `;
 const DiarySelectImgWrapper = styled.div`
   width: 320px;

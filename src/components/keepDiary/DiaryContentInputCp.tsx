@@ -9,10 +9,6 @@ const DiaryContentInputCp = () => {
       <DiaryContentInputContainer>
         <DiaryContentTextarea />
       </DiaryContentInputContainer>
-      <MakeDiaryButtonsWrapper>
-        <MakeDiaryButton>게시</MakeDiaryButton>
-        <DeleteDiaryButton>삭제</DeleteDiaryButton>
-      </MakeDiaryButtonsWrapper>
     </WriteContainer>
   );
 };
@@ -65,6 +61,7 @@ const DiaryContentTextarea = styled.textarea`
   height: 300px;
   font-size: 16px;
   color: #acacac;
+  background-color: ${(props) => props.theme.bgColor};
 `;
 
 const MakeDiaryButtonsWrapper = styled.div`

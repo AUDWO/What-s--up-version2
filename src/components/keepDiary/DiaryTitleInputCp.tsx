@@ -12,7 +12,7 @@ const DiaryTitleInputCp = () => {
   };
   return (
     <DiaryTitleInputSection>
-      <DiaryTitleText>TITLE </DiaryTitleText>
+      <DiaryTitleText>Title </DiaryTitleText>
       <DiaryTitleTextArea
         rows={1}
         onChange={handleResizeHeight}
@@ -50,9 +50,9 @@ const DiaryTitleTextArea = styled.textarea`
   border-bottom: 1px solid #c6c6c3;
   padding-top: 17px;
   color: #acacac;
-  ::-webkit-textarea-placeholder {
+  background-color: ${(props) => props.theme.bgColor};
+  &::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: red;
-    opacity: 1; /* Firefox */
+    color: #acacac;
   }
 `;
