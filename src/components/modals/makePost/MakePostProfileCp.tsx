@@ -24,6 +24,8 @@ const ProfileContainer = styled.div`
   padding-left: 15px;
   padding-top: 15px;
   display: flex;
+  background-color: ${(props) => props.theme.subBgColor};
+  border-bottom: 1px solid ${(props) => props.theme.subBorderColor};
 `;
 
 const ProfileImg = styled.img`
@@ -45,6 +47,7 @@ const ProfileName = styled.span`
   font-weight: 600;
   margin-top: 5px;
   margin-left: 5px;
+  color: ${(props) => props.theme.fontColor};
 `;
 
 const MakePostTextWrapper = styled.div`
