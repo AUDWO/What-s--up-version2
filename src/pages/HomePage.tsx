@@ -6,35 +6,95 @@ import PostContentsRCp from "@components/post/PostContentsRCp";
 
 import MainIcon from "@components/icons/MainIcon";
 import "./HomePage.css";
+import { useRecoilValue } from "recoil";
+import viewPortFixedState from "@/store/viewPortFixedState";
+import { MutableRefObject, useEffect, useRef } from "react";
+import useScrollTopRestore from "@/customHooks/useScrollTopRestore";
 
 const HomePage = () => {
+  const fixedState = useRecoilValue(viewPortFixedState);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useScrollTopRestore(
+    "scrollTop",
+    scrollContainerRef as MutableRefObject<HTMLDivElement>
+  );
+
   return (
-    <div>
-      <header className="relative-header">
+    <PageContainer>
+      {/* HomePageHeader appears when viewport is less than 500px*/}
+      <HomePageHeader>
         <HeaderIconWrapper>
           <MainIcon />
         </HeaderIconWrapper>
         <HeaderTitle>WHAT'S UP</HeaderTitle>
-      </header>
-      <Container>
-        <MainSideNavCp />
-        <MainContentsContainer>
-          <StoryContentsRCp />
-          <PostContentsRCp />
+      </HomePageHeader>
+      <HomePageContainer viewPortFixed={fixedState}>
+        <ScrollContentsContainer ref={scrollContainerRef}>
+          <MainSideNavCp ref={scrollContainerRef} />
+          <MainContentsContainer>
+            <StoryContentsRCp />
+            <PostContentsRCp />
+          </MainContentsContainer>
           <SubSideNavRCp />
-        </MainContentsContainer>
-      </Container>
-    </div>
+        </ScrollContentsContainer>
+      </HomePageContainer>
+    </PageContainer>
   );
 };
 
 export default HomePage;
 
-const Container = styled.div`
-  height: auto;
-  width: 100vw;
+//
+const MainContentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 740px) {
+    width: 100%;
+  }
+`;
+
+//
+
+//--------------homePage header
+
+const HomePageHeader = styled.div`
+  display: none;
+  padding:10px; 20px;
+  @media screen and (max-width: 500px) {
+    display: flex;
+    align-items:center;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid ${(props) => props.theme.borderColor};
+    background-color: ${(props) => props.theme.bgColor};
+  }
+`;
+
+//--------------homePage header
+const PageContainer = styled.div<{
+  viewPortFixed?: boolean;
+  scrollTop?: number;
+}>`
+  height: 100vh;
+  width: 100%;
+`;
+
+const HomePageContainer = styled.div<{
+  viewPortFixed?: boolean;
+  scrollTop?: number;
+}>`
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
+  background-color: ${(props) => props.theme.bgColor};
   @media screen and (max-width: 1250px) {
     justify-content: flex-end;
   }
@@ -58,26 +118,29 @@ const HeaderTitle = styled.div`
   margin-left: 10px;
 `;
 
-const MainContentsContainer = styled.div`
-  height: auto;
-  max-width: 600px;
+const ScrollContentsContainer = styled.div`
+  boxing-size: boder-box;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  @media screen and (max-width: 1250px) {
-    margin-right: 320px;
-  }
-  @media screen and (max-width: 1019px) {
-    margin: 0;
-  }
-  @media screen and (max-width: 799px) {
-    margin-left: 100px;
-  }
-  @media screen and (max-width: 705px) {
-    margin: 0;
+  align-items: center;
+  overflow-y: scroll;
+  position: relative;
+  @media screen and (max-width: 1400px) {
+    align-items: flex-end;
+    padding-right: 320px;
   }
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1160px) {
+    padding-right: 0;
+    padding-left: 100px;
+    align-items: center;
   }
+  @media screen and (max-width: 830px) {
+    padding: 0;
+  }
+
   @media screen and (max-width: 600px) {
     width: 100%;
   }
