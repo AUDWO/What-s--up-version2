@@ -1,39 +1,49 @@
 import styled from "styled-components";
-import { ChangeEvent, useState } from "react";
-import "./LoginFormCp.css";
+import { ChangeEvent } from "react";
+import { useRecoilState } from "recoil";
+import "./SignInFormCp.css";
+
+import useCustomMutation from "@/customHooks/queryCustomHooks/useCustomMutation";
+import { postSignIn } from "@/apis/authApis";
+import userSignInfo from "@/store/userSignInfo";
 
 const LoginFormCp = () => {
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
+  const [userSignState, setUserSignState] = useRecoilState(userSignInfo);
 
   const handleIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setId(e.target.value);
+    setUserSignState((prev) => ({ ...prev, email: userSignState.email }));
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    setUserSignState((prev) => ({ ...prev, nickname: userSignState.nickname }));
   };
 
+  const { mutate: handleSignIn } = useCustomMutation(postSignIn);
+
+  const signInForm = {
+    email: userSignState.email,
+    password: userSignState.password,
+  };
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // 페이지 새로 고침 방지
-    console.log(`아이디: ${id}, 비밀번호: ${password}`);
-    // 로그인 로직 구현
+    e.preventDefault();
+    handleSignIn(signInForm);
+    setUserSignState((prev) => ({ ...prev, email: "", password: "" }));
   };
   return (
     <LoginFormContainer>
-      <form className="sign-in_form">
-        <label className="sign-in_label-email">
+      <form className="sign-in_form" onSubmit={handleSubmit}>
+        <Label>
           email
           <Input placeholder="이메일" type="email" onChange={handleIdChange} />
-        </label>
-        <label className="sign-in_label-password">
+        </Label>
+        <Label>
           password
           <Input
             placeholder="비밀번호"
             type="password"
             onChange={handlePasswordChange}
           />
-        </label>
+        </Label>
         <LoginButton>로그인</LoginButton>
       </form>
     </LoginFormContainer>
@@ -43,6 +53,13 @@ const LoginFormCp = () => {
 export default LoginFormCp;
 
 const LoginFormContainer = styled.div``;
+
+const Label = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  color: #acacac;
+`;
 
 const Input = styled.input`
   width: 100%;
