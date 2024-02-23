@@ -1,5 +1,5 @@
-import { useState } from "react";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
 
 import EmailInput from "./Input/EmailInput";
 import NicknameInput from "./Input/NicknameInput";
@@ -7,14 +7,10 @@ import PasswordInput from "./Input/PasswordInput";
 import PasswordCheckInput from "./Input/PasswordCheckInput";
 import useCustomMutation from "@/customHooks/queryCustomHooks/useCustomMutation";
 import { postSignUp } from "@/apis/authApis";
-import { SignUpForm, SignUpRes } from "@/types/authTypes";
-import { useRecoilValue } from "recoil";
 import userSignInfo from "@/store/userSignInfo";
 
 const SignUpFormCp = () => {
-  const { mutate: handleSignUp } = useCustomMutation<SignUpRes, SignUpForm>(
-    postSignUp
-  );
+  const { mutate: handleSignUp } = useCustomMutation(postSignUp);
 
   const userSignState = useRecoilValue(userSignInfo);
 
@@ -24,15 +20,28 @@ const SignUpFormCp = () => {
     password: userSignState.password,
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.stopPropagation();
+
+    const { emailPassCheck, nicknamePassCheck, passwordPassCheck } =
+      userSignState;
+
+    if (!emailPassCheck) {
+      alert("사용 가능한 이메일인지 확인해주세요!");
+    } else if (!nicknamePassCheck) {
+      alert("사용 가능한 닉네임인지 확인해주세요!");
+    } else if (!passwordPassCheck) {
+      alert(
+        "올바른 비밀번호인지, 비밀번호가 비밀번호 확인와 일치하는지 확인해주세요!"
+      );
+    } else {
+      handleSignUp(signUpForm);
+    }
+  };
+
   return (
     <SignUpContainer>
-      <form
-        className="sign-in_form"
-        onSubmit={(e) => {
-          e.stopPropagation();
-          handleSignUp(signUpForm);
-        }}
-      >
+      <form className="sign-in_form" onSubmit={handleSubmit}>
         <EmailInput />
         <NicknameInput />
         <PasswordInput />
