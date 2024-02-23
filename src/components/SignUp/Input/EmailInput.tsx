@@ -36,6 +36,7 @@ const EmailInput = () => {
       setEmailPassChecking(false);
     }
     setPrevEmailChecking(true);
+    setUserSignState((prev) => ({ ...prev, emailPassChecking: true }));
   };
 
   const handleResetPassEmailChecking = (e: ChangeEvent<HTMLInputElement>) => {
