@@ -1,38 +1,43 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-interface userInfoType {
-  email: string;
-  nickName: string;
-  password: string;
-}
+import EmailInput from "./Input/EmailInput";
+import NicknameInput from "./Input/NicknameInput";
+import PasswordInput from "./Input/PasswordInput";
+import PasswordCheckInput from "./Input/PasswordCheckInput";
+import useCustomMutation from "@/customHooks/queryCustomHooks/useCustomMutation";
+import { postSignUp } from "@/apis/authApis";
+import { SignUpForm, SignUpRes } from "@/types/authTypes";
+import { useRecoilValue } from "recoil";
+import userSignInfo from "@/store/userSignInfo";
 
 const SignUpFormCp = () => {
-  const [userInfo, setUserInfo] = useState<userInfoType>({
-    email: "",
-    nickName: "",
-    password: "",
-  });
+  const { mutate: handleSignUp } = useCustomMutation<SignUpRes, SignUpForm>(
+    postSignUp
+  );
+
+  const userSignState = useRecoilValue(userSignInfo);
+
+  const signUpForm = {
+    email: userSignState.email,
+    nickname: userSignState.nickname,
+    password: userSignState.password,
+  };
+
   return (
     <SignUpContainer>
-      <form className="sign-in_form">
-        <label className="sign-in_label-email">
-          email
-          <Input placeholder="이메일" type="email" />
-        </label>
-        <label className="sign-in_label-password">
-          password
-          <Input placeholder="비밀번호" type="password" />
-        </label>
-        <label className="sign-in_label-password">
-          password
-          <Input placeholder="비밀번호" type="password" />
-        </label>
-        <label className="sign-in_label-password">
-          password
-          <Input placeholder="비밀번호" type="password" />
-        </label>
-        <LoginButton>로그인</LoginButton>
+      <form
+        className="sign-in_form"
+        onSubmit={(e) => {
+          e.stopPropagation();
+          handleSignUp(signUpForm);
+        }}
+      >
+        <EmailInput />
+        <NicknameInput />
+        <PasswordInput />
+        <PasswordCheckInput />
+        <LoginButton type="submit">회원가입</LoginButton>
       </form>
     </SignUpContainer>
   );
@@ -41,19 +46,6 @@ const SignUpFormCp = () => {
 export default SignUpFormCp;
 
 const SignUpContainer = styled.div``;
-const Input = styled.input`
-  width: 100%;
-  height: 40px;
-  box-sizing: border-box;
-  margin-top: 5px;
-  border-radius: 5px;
-  border: 1px solid #dee2e6;
-  padding-left: 5px;
-  &:focus {
-    outline: none;
-    border-color: ${(props) => props.theme.color.main};
-  }
-`;
 
 const LoginButton = styled.button`
   width: 100%;
