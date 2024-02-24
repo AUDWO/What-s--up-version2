@@ -1,18 +1,49 @@
 import styled from "styled-components";
-import { useRef } from "react";
+import { ChangeEvent, useRef, useState } from "react";
+import useCustomMutation from "@/customHooks/queryCustomHooks/useCustomMutation";
+import { postComment } from "@/apis/comment/postApis";
 
-const MorePostCommentInputCp = () => {
+interface Props {
+  postId: number;
+}
+
+const MorePostCommentInputCp = ({ postId }: Props) => {
+  const [content, setContent] = useState("");
+
   const textarea = useRef<HTMLTextAreaElement>(null);
-  const handleResizeHeight = () => {
+
+  const handleResizeHeight = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
     if (textarea.current) {
       textarea.current.style.height = "auto"; //height 초기화
       textarea.current.style.height = textarea.current.scrollHeight + "px";
     }
   };
+
+  const { mutate: handlePostComment } = useCustomMutation(postComment, [
+    `postComment-${postId}`,
+  ]);
+
   return (
     <CommentInputContainer>
-      <CommentTextarea ref={textarea} onChange={handleResizeHeight} />
-      <CommentInputButton>게시</CommentInputButton>
+      <CommentTextarea
+        ref={textarea}
+        onChange={handleResizeHeight}
+        placeholder="댓글을 입력해주세요!"
+        value={content}
+      />
+      <CommentInputButton
+        onClick={(e) => {
+          e.stopPropagation();
+          handlePostComment({
+            data: content,
+            type: "postComment",
+            contentId: postId,
+          });
+        }}
+      >
+        게시
+      </CommentInputButton>
     </CommentInputContainer>
   );
 };
@@ -26,9 +57,10 @@ const CommentInputContainer = styled.div`
   width: 100%;
   min-height: 50px;
   display: flex;
-  border-top: 1px solid #f3f3f3;
+  border-top: 1px solid ${(props) => props.theme.borderColor};
   align-items: center;
   padding-top: 10px;
+  background-color: ${(props) => props.theme.bgColor};
 `;
 
 const CommentInputButton = styled.button`
@@ -37,12 +69,17 @@ const CommentInputButton = styled.button`
   color: #4199ff;
   font-weight: 700;
   cursor: pointer;
+  background-color: ${(props) => props.theme.bgColor};
 `;
 
 const CommentTextarea = styled.textarea`
   width: 83%;
   outline: none;
+  background-color: ${(props) => props.theme.bgColor};
   border: none;
   padding-left: 20px;
   resize: none;
+  &::placeholder {
+    color: "#707070";
+  }
 `;
