@@ -20,9 +20,20 @@ const MorePostCommentInputCp = ({ postId }: Props) => {
     }
   };
 
-  const { mutate: handlePostComment } = useCustomMutation(postComment, [
+  const { mutate: createComment } = useCustomMutation(postComment, [
     `postComment-${postId}`,
   ]);
+
+  const handlePostComment = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    createComment({
+      data: content,
+      type: "postComment",
+      contentId: postId,
+    });
+  };
 
   return (
     <CommentInputContainer>
@@ -32,18 +43,7 @@ const MorePostCommentInputCp = ({ postId }: Props) => {
         placeholder="댓글을 입력해주세요!"
         value={content}
       />
-      <CommentInputButton
-        onClick={(e) => {
-          e.stopPropagation();
-          handlePostComment({
-            data: content,
-            type: "postComment",
-            contentId: postId,
-          });
-        }}
-      >
-        게시
-      </CommentInputButton>
+      <CommentInputButton onClick={handlePostComment}>게시</CommentInputButton>
     </CommentInputContainer>
   );
 };
