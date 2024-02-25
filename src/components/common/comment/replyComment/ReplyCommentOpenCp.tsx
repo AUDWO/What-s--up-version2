@@ -1,8 +1,18 @@
 import styled from "styled-components";
 import { ReplyCommentOpenIcon } from "@components/icons/ReplyCommentOpen";
+import { useRecoilState } from "recoil";
+import toggleState from "@/store/toggleState";
 const ReplyCommentOpenCp = () => {
+  const [replyCommentsOpen, setReplyCommentsOpen] = useRecoilState(
+    toggleState("1")
+  );
+
   return (
-    <ReplyCommentOpenWrapper>
+    <ReplyCommentOpenWrapper
+      onClick={() => {
+        setReplyCommentsOpen(!replyCommentsOpen);
+      }}
+    >
       <ReplyCommentOpenIcon />
       <ReplyCommentOpenButton>답글 보기</ReplyCommentOpenButton>
     </ReplyCommentOpenWrapper>
